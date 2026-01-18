@@ -1,233 +1,94 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mediaqueries.css">
+    <title>Software Engineer // Station Master</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=DotGothic16&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF3E1;
+            --tan: #F5E7C6;
+            --orange: #FA8112;
+            --charcoal: #222222;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .dot-font { font-family: 'DotGothic16', sans-serif; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .paper-texture::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("https://www.transparenttextures.com/patterns/p6-dark.png");
+        }
+
+        /* Scanline Overlay */
+        .scanlines::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 2;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+        
+        @keyframes drawLine {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+        .animate-draw {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pulseTrack {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.2; }
+        }
+        .pulse-track { animation: pulseTrack 2s infinite; }
+
+        .reveal-view {
+            transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.2s ease;
+        }
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            filter: blur(10px);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
-<body>
-    <nav id="desktop-nav">
-        <div class="logo">Nao Nagashima</div>
-        <div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-    <nav id="hamburger-nav">
-        <div class="logo">Nao Nagashima</div>
-        <div class="hamburger-menu">
-            <div class="hamburger-icon" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="menu-links">
-                <li><a href="#about" onclick="toggleMenu()">About</a></li>
-                <li><a href="#skills" onclick="toggleMenu()">Skills</a></li>
-                <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-            </div>
-        </div>
-    </nav>
-    <section id="profile">
-        <!-- <div class="section__pic-container">
-            <img src="./assets/profile-pic.png" alt="Jon Doe profile pic">
-        </div> -->
-        <div class="section__text">
-            <p class="section__text__p1">Hello, I'm</p>
-            <h1 class="title">Nao Nagashima</h1>
-            <p class="section__text__p2">Software Developer</p>
-            <div class="btn-container">
-                <button class="btn btn-color-2" onclick="window.open('./assets/Nao_Nagashima_Resume_2023.pdf')">
-                    Download CV
-                </button>
-                <button class="btn btn-color-1" onclick="location.href='./#contact'">
-                    Contact Info
-                </button>
-            </div>
-            <div id="socials-container">
-                <img 
-                    src="./assets/linkedin.png" 
-                    alt="My LinkedIn Profile"
-                    class="icon" 
-                    onclick="location.href='https://www.linkedin.com/in/nao-nagashima/'">
-                <img 
-                    src="./assets/github.png" 
-                    alt="My Github Profile"
-                    class="icon" 
-                    onclick="location.href='https://github.com/NaoNagashima'">
-            </div>
-        </div>
-    </section>
-    <section id="about">
-        <p class="section__text__p1">Get to know you more</p>
-        <h1 class="title">About Me</h1>
-        <div class="section-container">
-            <!-- <div calss="section__pic-container">
-                <img src="./assets/about-pic.png" alt="Profiel Picture" class="about-pic">
-            </div> -->
-            <div class="about-details-container">
-                <div class="about-containers">
-                    <div class="details-container">
-                        <img src="./assets/education.png" alt="Education Icon" class="icon">
-                        <h3>Education</h3>
-                        <p>Pursuing B.Sc. Bachelors Degree in Computer Science</p>
-                    </div>
-                </div>
-                <div class="text-container">
-                    <p>Welcome to my website! My name is Nao Nagashima and I am a third year computer science student enrolled 
-                        at the University of Toronto. I have studied in several programming languages which include: 
-                        java, javascript, python, assembly and C from several projects and im looking to learn more.</p>
-                </div>
-            </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#skills'">
-    </section>
-    <section id="skills">
-        <p class="section__text__p1">Explore My</p>
-        <h1 class="title">Skills</h1>
-        <div class="skills-details-container">
-            <div class="about-containers">
-                <div class="details-container">
-                    <h2 class="skills-sub-title">Software Development</h2>
-                    <div class="article-container">
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>Java</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>Python</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>C</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>RiscV Assembly</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>JavaScript</h3>
-                                <p>Basic</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="details-container">
-                    <h2 class="skills-sub-title">Software Development</h2>
-                    <div class="article-container">
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>Linux / Unix</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>Git</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>Bash</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img src="./assets/checkmark.png" alt="Skills icon" class="icon">
-                            <div>
-                                <h3>ArcGis Pro</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#projects'">
-    </section>
-    <section id="projects">
-        <p class="section__text__p1">Browse My Recent</p>
-        <h1 class="title">Projects</h1>
-        <div class="experience-detail-container">
-            <div class="about-containers">
-            <div class="details-container color-container">
-                <div class="article-container">
-                    <img src="./assets/fixmymistake.png" alt="fixmymistake" class="project-img">
-                </div>
-                <h2 class="experience-sub-title project-title">DeerHacks 2023 Submittion</h2>
-                <div class="btn-container">
-                    <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/JasonEide/deerhacks_2023'">
-                        Github
-                    </button>
-                    <button class="btn btn-color-2 project-btn" onclick="location.href='https://fixmymistake.tech/'">
-                        Live Demo
-                    </button>
-                </div>
-            </div>
-            <div class="details-container color-container">
-                <div class="article-container">
-                    <img src="./assets/simon.png" alt="simon" class="project-img">
-                </div>
-                <h2 class="experience-sub-title project-title">Assembly Simon Game</h2>
-                <div class="btn-container">
-                    <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/NaoNagashima/Simon'">
-                        Github
-                    </button>
-                </div>
-            </div>
-            <div class="details-container color-container">
-                <div class="article-container">
-                    <img src="./assets/boggle.png" alt="boggle" class="project-img">
-                </div>
-                <h2 class="experience-sub-title project-title">Group Boggle Game</h2>
-                <div class="btn-container">
-                </div>
-            </div>
-        </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#contact'">
-    </section>
-    <section id="contact">
-        <p class="section__text__p1">Get In Touch</p>
-        <h1 class="title">Contact Me</h1>
-        <div class="contact-info-upper-container">
-            <div class="contact-info-container">
-                <img src="./assets/email.png" alt="Email icon" class="icon contact-icon email-icon">
-                <p><a href="mailto:mails.to.nano@gmail.com">mails.to.nano@gmail.com</a></p>
-            </div>
-            <div class="contact-info-container">
-                <img src="./assets/linkedin.png" alt="LinkedIn icon" class="icon contact-icon">
-                <p><a href="https://www.linkedin.com/in/nao-nagashima">LinkedIn</a></p>
-            </div>
-        </div>
-    </section>
-    <script src="script.js"></script>
+<body class="paper-texture scanlines no-scrollbar">
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
